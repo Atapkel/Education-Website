@@ -1,4 +1,4 @@
-// Teacher data (mock database)
+// Teacher fixtures (mock database)
 const teachers = [
    {
      id: 1,
@@ -50,7 +50,7 @@ const teachers = [
    }
  ];
  
- // Schedule data (mock)
+ // Schedule fixtures (mock)
  const teacherSchedules = {
    1: {
      Monday: [
@@ -156,7 +156,7 @@ const teachers = [
    }
  };
  
- // Courses data (mock)
+ // Courses fixtures (mock)
  const teacherCourses = {
    1: [
      { name: "Advanced Calculus", tag: "Mathematics", description: "Master differential and integral calculus with practical applications." },
@@ -169,7 +169,7 @@ const teachers = [
    3: [
      { name: "Web Development Bootcamp", tag: "Programming", description: "Learn HTML, CSS, JavaScript and build responsive websites." },
      { name: "Python Fundamentals", tag: "Programming", description: "Master Python programming from basics to advanced concepts." },
-     { name: "Data Structures & Algorithms", tag: "Computer Science", description: "Implement essential data structures and algorithms in JavaScript." }
+     { name: "Data Structures & Algorithms", tag: "Computer Science", description: "Implement essential fixtures structures and algorithms in JavaScript." }
    ],
    4: [
      { name: "Molecular Biology", tag: "Biology", description: "Understand the molecular basis of biological activity in living systems." },
@@ -244,7 +244,7 @@ const teachers = [
        button.classList.add('active');
        
        // Show/hide teacher-specific fields on register page
-       if (button.getAttribute('data-type') === 'teacher') {
+       if (button.getAttribute('fixtures-type') === 'teacher') {
          document.querySelector('.teacher-fields')?.style.setProperty('display', 'block');
        } else {
          document.querySelector('.teacher-fields')?.style.setProperty('display', 'none');
@@ -446,7 +446,7 @@ const teachers = [
    
    const emailInput = document.getElementById('email');
    const passwordInput = document.getElementById('password');
-   const userType = document.querySelector('.auth-type-btn.active').getAttribute('data-type');
+   const userType = document.querySelector('.auth-type-btn.active').getAttribute('fixtures-type');
    
    if (validateForm([
      { input: emailInput, message: 'Please enter a valid email address', validator: validateEmail },
@@ -488,7 +488,7 @@ const teachers = [
    const passwordInput = document.getElementById('password');
    const confirmPasswordInput = document.getElementById('confirm-password');
    const termsCheckbox = document.getElementById('terms');
-   const userType = document.querySelector('.auth-type-btn.active').getAttribute('data-type');
+   const userType = document.querySelector('.auth-type-btn.active').getAttribute('fixtures-type');
    
    const validations = [
      { input: nameInput, message: 'Please enter your full name' },

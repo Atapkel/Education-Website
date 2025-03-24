@@ -1,49 +1,35 @@
 {% extends 'base.html' %}
+{% load dict_extras %}
 
 {% block content %}
-
 <main>
    <section class="teacher-profile">
        <div class="container">
            <div class="back-link">
-               <a href="index.html#teachers">&larr; Back to All Teachers</a>
+               <a href="{% url 'index' %}">&larr; Back to All Teachers</a>
            </div>
-           
-           <div class="profile-container" id="teacher-profile">
-               <!-- Teacher profile details will be loaded here -->
-               <div class="profile-image" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=600&fit=crop')"></div>
-<div class="profile-content">
-  <h1>John Doe</h1>
-  <span class="profile-specialty">Mathematics</span>
-  
-  <div class="profile-stats">
-    <div class="stat-item">
-      <div class="stat-value">10+</div>
-      <div class="stat-label">Years Experience</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">4.8</div>
-      <div class="stat-label">Rating</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">500</div>
-      <div class="stat-label">Students</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">8</div>
-      <div class="stat-label">Courses</div>
-    </div>
-  </div>
-  
-  <p>Passionate educator with a decade of experience in teaching advanced mathematics.</p>
-</div>
 
+           <div class="profile-container" id="teacher-profile">
+               <div class="profile-image" style="background-image: url('{{ teacher.image.url }}')"></div>
+               <div class="profile-content">
+                   <h1>{{ teacher.name }} {{ teacher.surname }}</h1>
+                   <span class="profile-specialty">{{ teacher.speciality }}</span>
+
+                   <div class="profile-stats">
+                       <div class="stat-item">
+                           <div class="stat-value">{{ teacher.year_experience }}</div>
+                           <div class="stat-label">Years Experience</div>
+                       </div>
+                   {# Additional stats can be added here if needed #}
+                   </div>
+
+                   <p>{{ teacher.more_about }}</p>
+               </div>
            </div>
-           
+
            <div class="teacher-schedule-section">
                <h2>Weekly Schedule</h2>
                <div class="schedule-container" id="teacher-schedule">
-                   <!-- Teacher schedule will be loaded here -->
                    <div class="schedule-header">
                      <div class="day-name">Monday</div>
                      <div class="day-name">Tuesday</div>
@@ -54,92 +40,27 @@
                      <div class="day-name">Sunday</div>
                    </div>
                    <div class="schedule-body">
-                     <div class="day-column" data-day="Monday">
-                       <div class="time-slot available">10:00 AM - 11:00 AM - Available</div>
-                       <div class="time-slot booked">2:00 PM - 3:00 PM - Booked</div>
+                     {% for day in days_of_week %}
+                     <div class="day-column" data-day="{{ day }}">
+                        {% with sessions=schedule|dict_get:day %}
+                           {% if sessions %}
+                              {% for session in sessions %}
+                                 <div class="time-slot {{ session.status|lower }}">
+                                   {{ session.time_slot }} - {{ session.status }}
+                                 </div>
+                              {% endfor %}
+                           {% else %}
+                              <div class="time-slot">No sessions</div>
+                           {% endif %}
+                        {% endwith %}
                      </div>
-                     <div class="day-column" data-day="Tuesday">
-                       <div class="time-slot available">11:00 AM - 12:00 PM - Available</div>
-                     </div>
-                     <div class="day-column" data-day="Wednesday">
-                       <div class="time-slot">No sessions</div>
-                     </div>
-                     <div class="day-column" data-day="Thursday">
-                       <div class="time-slot available">3:00 PM - 4:00 PM - Available</div>
-                     </div>
-                     <div class="day-column" data-day="Friday">
-                       <div class="time-slot">No sessions</div>
-                     </div>
-                     <div class="day-column" data-day="Saturday">
-                       <div class="time-slot">No sessions</div>
-                     </div>
-                     <div class="day-column" data-day="Sunday">
-                       <div class="time-slot">No sessions</div>
-                     </div>
+                     {% endfor %}
                    </div>
-                   
                </div>
            </div>
-           
-           <div class="teacher-courses">
-               <h2>Courses Taught</h2>
-               <div class="courses-grid small-grid">
-                   <!-- Courses will be loaded here -->
-                   <div class="course-card">
-                     <div class="course-image"></div>
-                     <div class="course-content">
-                       <span class="tag">Programming</span>
-                       <h3>Intro to Python</h3>
-                       <p>Learn the basics of Python programming.</p>
-                       <a href="#" class="text-link">View Course</a>
-                     </div>
-                   </div>
-                   
-                   <div class="course-card">
-                     <div class="course-image"></div>
-                     <div class="course-content">
-                       <span class="tag">Web Development</span>
-                       <h3>HTML & CSS Basics</h3>
-                       <p>Understand the building blocks of web design.</p>
-                       <a href="#" class="text-link">View Course</a>
-                     </div>
-                   </div>
-                   
-               </div>
-           </div>
-           
-           <div class="booking-section">
-               <h2>Book a Session</h2>
-               <p>Select a time from the available slots to book a session with this teacher.</p>
-               <div class="booking-form-container">
-                   <form class="booking-form">
-                       <div class="form-group">
-                           <label for="booking-date">Date</label>
-                           <input type="date" id="booking-date" required>
-                       </div>
-                       <div class="form-group">
-                           <label for="booking-time">Time Slot</label>
-                           <select id="booking-time" required>
-                               <option value="">Select a time</option>
-                               <!-- Time slots will be loaded dynamically -->
 
-                               
-                           </select>
-                       </div>
-                       <div class="form-group">
-                           <label for="booking-topic">Topic/Subject</label>
-                           <input type="text" id="booking-topic" required>
-                       </div>
-                       <div class="form-group">
-                           <label for="booking-notes">Additional Notes</label>
-                           <textarea id="booking-notes" rows="3"></textarea>
-                       </div>
-                       <button type="submit" class="cta-button">Request Booking</button>
-                   </form>
-               </div>
-           </div>
+
        </div>
    </section>
 </main>
-
 {% endblock %}

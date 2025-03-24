@@ -3,50 +3,53 @@
 {% block content %}
 
 
-<main>
-   <section class="hero">
-       <div class="container">
-           <div class="hero-content">
-               <h1 class="main-title">Education for Everyone, Everywhere</h1>
-               <p class="subtitle">Connect with expert teachers and access quality education resources from anywhere in the world.</p>
-               <div class="cta-container">
-                   <a href="register.html" class="cta-button">Get Started</a>
-                   <a href="#teachers" class="text-link">Find Teachers</a>
-               </div>
-           </div>
-           <div class="hero-image">
-               <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" alt="Online Education" class="featured-image">
-           </div>
-       </div>
-   </section>
-
-   <section id="teachers" class="teachers-section">
-       <div class="container">
-           <div class="section-header">
-               <h2 class="section-title">Meet Our Expert Teachers</h2>
-               <p class="section-subtitle">Learn from professionals with years of experience in their fields</p>
-           </div>
-          
-
-           <div class="teachers-grid" id="teachers-list">
-               <!-- Teachers will be loaded here dynamically -->
-
-               <div class="teacher-card">
-                <div class="teacher-card-image" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=600&fit=crop')"></div>
-                <div class="teacher-card-content">
-                  <h3>Beibarys</h3>
-                  <span class="teacher-specialty">Backend</span>
-                  <p>Dr. Johnson specializes in making complex mathematical concepts accessible to students at all levels. Her research focuses on mathematical education methods and she has published several papers on innovative teaching techniques. She believes in a hands-on approach to learning and incorporates real-world problems into her lessons.</p>
-                  <a href="{% url 'detail' %}" class="text-link">View Profile</a>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="main-title">Education for Everyone, Everywhere</h1>
+                    <p class="subtitle">Connect with expert teachers and access quality education resources from
+                        anywhere in the world.</p>
+                    <div class="cta-container">
+                        <a href="register.html" class="cta-button">Get Started</a>
+                        <a href="#teachers" class="text-link">Find Teachers</a>
+                    </div>
                 </div>
-               </div>
-                
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" alt="Online Education"
+                         class="featured-image">
+                </div>
+            </div>
+        </section>
 
-               
-           </div>
-       </div>
-   </section>
-   
-</main>
+        <section id="teachers" class="teachers-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Meet Our Expert Teachers</h2>
+                    <p class="section-subtitle">Learn from professionals with years of experience in their fields</p>
+                </div>
+
+
+                <div class="teachers-grid" id="teachers-list">
+
+                    {% for teacher in teachers %}
+                        <div class="teacher-card">
+                            <div class="teacher-card-image"
+                                 style="background-image: url('{{ teacher.image.url }}')"></div>
+                            <div class="teacher-card-content">
+                                <h3>{{ teacher.name }} {{ teacher.surname }}</h3>
+                                <span class="teacher-specialty">{{ teacher.speciality }}</span>
+                                <p>{{ teacher.more_about }}</p>
+                                <a href="{% url 'detail' pk=teacher.id %}" class="text-link">View Profile</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </section>
+
+    </main>
 
 {% endblock %}
