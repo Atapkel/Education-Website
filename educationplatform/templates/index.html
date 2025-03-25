@@ -11,7 +11,9 @@
                     <p class="subtitle">Connect with expert teachers and access quality education resources from
                         anywhere in the world.</p>
                     <div class="cta-container">
-                        <a href="register.html" class="cta-button">Get Started</a>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="cta-button">Get Started</a>
+                        {% endif %}
                         <a href="#teachers" class="text-link">Find Teachers</a>
                     </div>
                 </div>
@@ -25,8 +27,11 @@
         <section id="teachers" class="teachers-section">
             <div class="container">
                 <div class="section-header">
+                    {% if not teachers %}
+                    <h2 class="section-title">We have not teachers yet</h2>
+                    {% else %}
                     <h2 class="section-title">Meet Our Expert Teachers</h2>
-                    <p class="section-subtitle">Learn from professionals with years of experience in their fields</p>
+                    {% endif %}
                 </div>
 
 

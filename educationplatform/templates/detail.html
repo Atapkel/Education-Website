@@ -45,9 +45,13 @@
                         {% with sessions=schedule|dict_get:day %}
                            {% if sessions %}
                               {% for session in sessions %}
-                                 <div class="time-slot {{ session.status|lower }}">
+                                  <a href="{% url 'book' teacher_id=teacher.id session_id=session.id %}">
+                                 <div  class="time-slot {{ session.status|lower }}">
                                    {{ session.time_slot }} - {{ session.status }}
+                                     <br>
+                                     {{ session.topic }}
                                  </div>
+                                  </a>
                               {% endfor %}
                            {% else %}
                               <div class="time-slot">No sessions</div>

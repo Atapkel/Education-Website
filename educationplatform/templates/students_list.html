@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <a href="" class="cta-button">Join Lesson as Teacher</a>
+    <br>
+    <br><br><br>
+    <h1 class="mb-4">Students Registered for "{{ session.topic }}"</h1>
+    <div class="row">
+    {% for booking in booked_sessions %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.student.username }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ booking.student.email }}</h6>
+              {% if booking.expectation %}
+                <p class="card-text"><strong>Expectation:</strong> {{ booking.expectation }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+        <div class="col-12">
+          <div class="alert alert-info" role="alert">
+          No students have booked this session yet.
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+    <div class="text-center mt-4">
+  </div>
+</div>
+{% endblock %}

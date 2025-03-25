@@ -1,7 +1,9 @@
 from django.db import models
-
+from django.db.models import ForeignKey
+from django.contrib.auth.models import User
 
 class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     year_experience = models.PositiveIntegerField()
@@ -40,7 +42,8 @@ class Session(models.Model):
         ('Available', 'Available'),
         ('Booked', 'Booked'),
     ]
-
+    topic = models.CharField(max_length=100)
+    description = models.TextField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='sessions')
     day = models.CharField(max_length=10, choices=DAYS_OF_WEEK)
     time_slot = models.CharField(max_length=20, choices=TIME_SLOTS)  # Using predefined 24-hour format slots
@@ -48,3 +51,11 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.teacher.name} {self.teacher.surname} - {self.day}: {self.time_slot} ({self.status})"
+
+
+class BookedSession(models.Model):
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='booked_sessions')
+    student = ForeignKey(User, on_delete=models.CASCADE, related_name='booked_students')
+    expectation = models.TextField()
+    def __str__(self):
+        return f"{self.student.username} booked {self.session}"

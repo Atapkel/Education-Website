@@ -1,32 +1,36 @@
 {% extends 'base.html' %}
-
+{% load dict_extras %}
 {% block content %}
-<main>
-   <section class="profile-section">
-     <div class="container">
-       <div class="profile-header">
-         <h1>Edit Your Profile</h1>
-         <p>Update your profile image, name, and description</p>
-       </div>
-       <form id="profile-form" class="profile-form" action="#" method="POST" enctype="multipart/form-data">
-         <div class="form-group">
-           <label for="profile-image">Profile Image</label>
-           <div class="profile-image-preview">
-             <img id="profile-preview" src="default-profile.png" alt="Profile Image" />
-           </div>
-           <input type="file" id="profile-image" name="profile-image" accept="image/*" />
-         </div>
-         <div class="form-group">
-           <label for="name">Name</label>
-           <input type="text" id="name" name="name" value="Your Name" required />
-         </div>
-         <div class="form-group">
-           <label for="description">Description</label>
-           <textarea id="description" name="description" rows="4" placeholder="Tell us about yourself...">Your description here...</textarea>
-         </div>
-         <button type="submit" class="cta-button">Save Changes</button>
-       </form>
-     </div>
-   </section>
- </main>
+<div class="container">
+    <h2>Your Booked Sessions</h2>
+    <div class="schedule-container" id="booked-schedule">
+        <div class="schedule-header">
+            {% for day in days_of_week %}
+                <div class="day-name">{{ day }}</div>
+            {% endfor %}
+        </div>
+        <div class="schedule-body">
+            {% for day in days_of_week %}
+            <div class="day-column" data-day="{{ day }}">
+                {% with sessions=booked_schedule|dict_get:day %}
+                    {% if sessions and sessions.count %}
+                        {% for booking in sessions %}
+                            <a href="{% url 'book' teacher_id=booking.session.teacher_id session_id=booking.session_id %}">
+                        <div class="time-slot {{ booking.session.status|lower }}">
+                            <strong>{{ booking.session.time_slot }}</strong><br>
+                            {{ booking.session.topic }}<br>
+                            Teacher: {{ booking.session.teacher.name }} {{ booking.session.teacher.surname }}<br>
+                            Expectation: {{ booking.expectation }}
+                        </div>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="time-slot">No sessions</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load dict_extras %}
+
+{% block content %}
+    <div class="container">
+        <div class="profile-container" id="teacher-profile">
+            <div class="profile-image" style="background-image: url('{{ teacher.image.url }}')"></div>
+            <div class="profile-content">
+                <h1>{{ teacher.name }} {{ teacher.surname }}</h1>
+                <span class="profile-specialty">{{ teacher.speciality }}</span>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ teacher.year_experience }}</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    {# Additional stats can be added here if needed #}
+                </div>
+
+                <p>{{ teacher.more_about }}</p>
+            </div>
+        </div>
+
+
+        <div class="teacher-schedule-section">
+            <h2>Weekly Schedule</h2>
+            <div class="schedule-container" id="teacher-schedule">
+                <div class="schedule-header">
+                    <div class="day-name">Monday</div>
+                    <div class="day-name">Tuesday</div>
+                    <div class="day-name">Wednesday</div>
+                    <div class="day-name">Thursday</div>
+                    <div class="day-name">Friday</div>
+                    <div class="day-name">Saturday</div>
+                    <div class="day-name">Sunday</div>
+                </div>
+                <div class="schedule-body">
+                    {% for day in days_of_week %}
+                        <div class="day-column" data-day="{{ day }}">
+                            {% with sessions=schedule|dict_get:day %}
+                                {% if sessions %}
+                                    {% for session in sessions %}
+                                        <a href="{% url 'students_list' teacher_id=teacher.id session_id=session.id %}">
+                                            <div class="time-slot {{ session.status|lower }}">
+                                                {{ session.time_slot }} - {{ session.status }}
+                                                <br>
+                                                {{ session.topic }}
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="time-slot">No sessions</div>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+        <form id="create-session-form" class="auth-form" method="POST">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+    <div class="form-error">
+      {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Session Fields -->
+  <div class="form-group">
+    <label for="{{ form.topic.id_for_label }}">Topic</label>
+    {{ form.topic }}
+    <div class="form-error">{{ form.topic.errors }}</div>
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.description.id_for_label }}">Description</label>
+    {{ form.description }}
+    <div class="form-error">{{ form.description.errors }}</div>
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.day.id_for_label }}">Day</label>
+    {{ form.day }}
+    <div class="form-error">{{ form.day.errors }}</div>
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.time_slot.id_for_label }}">Time Slot</label>
+    {{ form.time_slot }}
+    <div class="form-error">{{ form.time_slot.errors }}</div>
+  </div>
+
+
+  <button type="submit" class="cta-button full-width">Create Session</button>
+</form>
+
+
+
+    </div>
+{% endblock %}

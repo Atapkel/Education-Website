@@ -1,77 +1,113 @@
-{% extends 'base.html' %}
+{% extends 'registration/base.html' %}
 
 {% block content %}
-<main>
-   <section class="auth-section">
-       <div class="container">
-           <div class="auth-container">
-               <div class="auth-header">
-                   <h1>Create an Account</h1>
-                   <p>Join our learning community today</p>
-               </div>
-               
-               <div class="auth-type-toggle">
-                   <button class="auth-type-btn active" data-type="student">As Student</button>
-                   <button class="auth-type-btn" data-type="teacher">As Teacher</button>
-               </div>
+    <main>
+        <section class="auth-section">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h1>Create an Account</h1>
+                        <p>Join our learning community today</p>
+                    </div>
 
-               <form id="register-form" class="auth-form">
-                   <div class="form-group">
-                       <label for="fullname">Full Name</label>
-                       <input type="text" id="fullname" required>
-                       <div class="form-error"></div>
-                   </div>
-                   <div class="form-group">
-                       <label for="email">Email</label>
-                       <input type="email" id="email" required>
-                       <div class="form-error"></div>
-                   </div>
-                   <div class="form-group">
-                       <label for="password">Password</label>
-                       <input type="password" id="password" required>
-                       <div class="form-error"></div>
-                   </div>
-                   <div class="form-group">
-                       <label for="confirm-password">Confirm Password</label>
-                       <input type="password" id="confirm-password" required>
-                       <div class="form-error"></div>
-                   </div>
-                   
-                   <!-- Teacher specific fields (initially hidden) -->
-                   <div class="teacher-fields" style="display: none;">
-                       <div class="form-group">
-                           <label for="specialty">Specialty</label>
-                           <input type="text" id="specialty">
-                           <div class="form-error"></div>
-                       </div>
-                       <div class="form-group">
-                           <label for="experience">Years of Experience</label>
-                           <input type="number" id="experience" min="0">
-                           <div class="form-error"></div>
-                       </div>
-                       <div class="form-group">
-                           <label for="bio">Short Bio</label>
-                           <textarea id="bio" rows="3"></textarea>
-                           <div class="form-error"></div>
-                       </div>
-                   </div>
-                   
-                   <div class="form-footer">
-                       <div class="terms-agreement">
-                           <input type="checkbox" id="terms" required>
-                           <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
-                       </div>
-                   </div>
-                   <button type="submit" class="cta-button full-width">Register</button>
-                   <div class="auth-redirect">
-                       <p>Already have an account? <a href="login.html">Login here</a></p>
-                   </div>
-               </form>
-               
-               <div class="form-message"></div>
-           </div>
-       </div>
-   </section>
-</main>
+                    <div class="auth-type-toggle">
+                        <button class="auth-type-btn active" data-type="student">Student</button>
+                    </div>
+
+
+                    <form id="register-form" class="auth-form" method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}">username</label>
+                            {{ form.username }}
+                            <div class="form-error">{{ form.username.errors }}</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
+                            <div class="form-error">{{ form.email.errors }}</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}">Password</label>
+                            {{ form.password1 }}
+                            <div class="form-error">{{ form.password1.errors }}</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                            {{ form.password2 }}
+                            <div class="form-error">{{ form.password2.errors }}</div>
+                        </div>
+
+                        <button type="submit" class="cta-button full-width" >Register</button>
+
+                        <div class="auth-redirect">
+                            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                        </div>
+                    </form>
+
+
+                    {#               <form id="register-form" class="auth-form">#}
+                    {#                   <div class="form-group">#}
+                    {#                       <label for="fullname">Full Name</label>#}
+                    {#                       <input type="text" id="fullname" required>#}
+                    {#                       <div class="form-error"></div>#}
+                    {#                   </div>#}
+                    {#                   <div class="form-group">#}
+                    {#                       <label for="email">Email</label>#}
+                    {#                       <input type="email" id="email" required>#}
+                    {#                       <div class="form-error"></div>#}
+                    {#                   </div>#}
+                    {#                   <div class="form-group">#}
+                    {#                       <label for="password">Password</label>#}
+                    {#                       <input type="password" id="password" required>#}
+                    {#                       <div class="form-error"></div>#}
+                    {#                   </div>#}
+                    {#                   <div class="form-group">#}
+                    {#                       <label for="confirm-password">Confirm Password</label>#}
+                    {#                       <input type="password" id="confirm-password" required>#}
+                    {#                       <div class="form-error"></div>#}
+                    {#                   </div>#}
+                    {#                   #}
+                    {#                   <!-- Teacher specific fields (initially hidden) -->#}
+                    {#                   <div class="teacher-fields" style="display: none;">#}
+                    {#                       <div class="form-group">#}
+                    {#                           <label for="specialty">Specialty</label>#}
+                    {#                           <input type="text" id="specialty">#}
+                    {#                           <div class="form-error"></div>#}
+                    {#                       </div>#}
+                    {#                       <div class="form-group">#}
+                    {#                           <label for="experience">Years of Experience</label>#}
+                    {#                           <input type="number" id="experience" min="0">#}
+                    {#                           <div class="form-error"></div>#}
+                    {#                       </div>#}
+                    {#                       <div class="form-group">#}
+                    {#                           <label for="bio">Short Bio</label>#}
+                    {#                           <textarea id="bio" rows="3"></textarea>#}
+                    {#                           <div class="form-error"></div>#}
+                    {#                       </div>#}
+                    {#                   </div>#}
+                    {#                   #}
+                    {#                   <div class="form-footer">#}
+                    {#                       <div class="terms-agreement">#}
+                    {#                           <input type="checkbox" id="terms" required>#}
+                    {#                           <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>#}
+                    {#                       </div>#}
+                    {#                   </div>#}
+                    {#                   <button type="submit" class="cta-button full-width">Register</button>#}
+                    {#                   <div class="auth-redirect">#}
+                    {#                       <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>#}
+                    {#                   </div>#}
+                    {#               </form>#}
+
+
+                    <div class="form-message"></div>
+                </div>
+            </div>
+        </section>
+    </main>
 
 {% endblock %}

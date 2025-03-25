@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlatform - Learning Made Simple</title>
+    <meta name="description" content="A platform for connecting teachers and students">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="main-header">
+            <div class="container">
+                <div class="logo">SDU eduplatform</div>
+                <div class="menu-toggle">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-links">
+                        <li><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+{#                        <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>#}
+{#                        <li><a href="{% url 'login' %}" class="nav-link highlight">Login</a></li>#}
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">SDU eduplatform</div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h5>Platform</h5>
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="#courses">Courses</a></li>
+                                <li><a href="#teachers">Teachers</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h5>Support</h5>
+                            <ul>
+                                <li><a href="#contact">Contact</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Help Center</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h5>Legal</h5>
+                            <ul>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Cookie Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 EduPlatform. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

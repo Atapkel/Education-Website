@@ -1,0 +1,102 @@
+{% extends 'registration/base.html' %}
+
+{% block content %}
+<main>
+  <section class="auth-section">
+    <div class="container">
+      <div class="auth-container">
+        <div class="auth-header">
+          <h1>Create a Teacher Account</h1>
+          <p>Join our learning community as a teacher</p>
+        </div>
+
+        <form id="register-teacher-form" class="auth-form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="form-error">
+              {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- User Fields -->
+          <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+            <div class="form-error">{{ form.username.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            <div class="form-error">{{ form.email.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Password</label>
+            {{ form.password1 }}
+            <div class="form-error">{{ form.password1.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+            {{ form.password2 }}
+            <div class="form-error">{{ form.password2.errors }}</div>
+          </div>
+
+          <!-- Teacher Specific Fields -->
+          <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">First Name</label>
+            {{ form.name }}
+            <div class="form-error">{{ form.name.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.surname.id_for_label }}">Last Name</label>
+            {{ form.surname }}
+            <div class="form-error">{{ form.surname.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.year_experience.id_for_label }}">Years of Experience</label>
+            {{ form.year_experience }}
+            <div class="form-error">{{ form.year_experience.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.university.id_for_label }}">University</label>
+            {{ form.university }}
+            <div class="form-error">{{ form.university.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.speciality.id_for_label }}">Speciality</label>
+            {{ form.speciality }}
+            <div class="form-error">{{ form.speciality.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.more_about.id_for_label }}">More About You</label>
+            {{ form.more_about }}
+            <div class="form-error">{{ form.more_about.errors }}</div>
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">Profile Image</label>
+            {{ form.image }}
+            <div class="form-error">{{ form.image.errors }}</div>
+          </div>
+
+          <button type="submit" class="cta-button full-width">Register</button>
+
+          <div class="auth-redirect">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
