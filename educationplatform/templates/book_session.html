@@ -37,7 +37,13 @@
             <div class="booking-message">
                 <h3>You have already booked this session.
                 </h3>
-                <a href="" class="cta-button">Join Lesson as Student</a>
+                <form id="studentJoinForm">
+                  <input type="hidden" name="room" value="lesson-{{ session.id }}">
+
+                    <input type="hidden" name="name" value="{{ name|title }}">
+                    <button type="submit" class="cta-button">Join Lesson as Student</button>
+                </form>
+
             </div>
         {% else %}
             <div class="booking-form">
@@ -133,5 +139,29 @@
             background: #0056b3;
         }
     </style>
+
+    <script>
+    const studentForm = document.getElementById('studentJoinForm');
+
+    const handleStudentJoin = async (e) => {
+        e.preventDefault();
+        const room = e.target.room.value.toUpperCase();
+        const name = e.target.name.value;
+
+        let response = await fetch(`/video/get_token/?channel=${room}`);
+        let data = await response.json();
+
+        sessionStorage.setItem('UID', data.uid);
+        sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('room', room);
+        sessionStorage.setItem('name', name);
+
+        window.open('/video/room/', '_self');
+    };
+
+    if (studentForm) {
+        studentForm.addEventListener('submit', handleStudentJoin);
+    }
+</script>
 
 {% endblock %}

@@ -74,6 +74,8 @@ def book(request, teacher_id, session_id):
         context = {
             'teacher': teacher,
             'session': session,
+            'name': request.user.username,
+            'room': session.topic,
             'already_booked': True,
         }
         return render(request, 'book_session.html', context)
@@ -131,6 +133,8 @@ def students_list(request, teacher_id, session_id):
         'teacher': teacher,
         'session': session,
         'booked_sessions': booked_sessions,
-        'students': students
+        'students': students,
+        'name' : request.user.username,
+        'room' : session.topic,
     }
     return render(request,'students_list.html', context)

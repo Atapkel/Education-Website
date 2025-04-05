@@ -2,32 +2,63 @@
 
 {% block content %}
 <div class="container my-5">
-    <a href="" class="cta-button">Join Lesson as Teacher</a>
-    <br>
+
+    <form id="joinForm">
+        <!-- Hidden fields from Django -->
+       <input type="hidden" name="room" value="lesson-{{ session.id }}">
+        <input type="hidden" name="name" value="{{ name|title }}">
+        <button type="submit" class="cta-button">Join Lesson as Teacher</button>
+    </form>
+
     <br><br><br>
     <h1 class="mb-4">Students Registered for "{{ session.topic }}"</h1>
     <div class="row">
-    {% for booking in booked_sessions %}
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">{{ booking.student.username }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ booking.student.email }}</h6>
-              {% if booking.expectation %}
-                <p class="card-text"><strong>Expectation:</strong> {{ booking.expectation }}</p>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    {% empty %}
-        <div class="col-12">
-          <div class="alert alert-info" role="alert">
-          No students have booked this session yet.
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-    <div class="text-center mt-4">
-  </div>
+        {% for booking in booked_sessions %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ booking.student.username }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ booking.student.email }}</h6>
+                        {% if booking.expectation %}
+                            <p class="card-text"><strong>Expectation:</strong> {{ booking.expectation }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    No students have booked this session yet.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
+
+<!-- Add the JS here -->
+<script>
+    let form = document.getElementById('joinForm');
+
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        let room = e.target.room.value.toUpperCase();
+        let name = e.target.name.value;
+
+        let response = await fetch(`/video/get_token/?channel=${room}`);
+        let data = await response.json();
+
+        let UID = data.uid;
+        let token = data.token;
+
+        sessionStorage.setItem('UID', UID);
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('room', room);
+        sessionStorage.setItem('name', name);
+
+        window.open('/video/room/', '_self');
+    }
+
+    form.addEventListener('submit', handleSubmit);
+</script>
+
 {% endblock %}

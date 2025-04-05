@@ -1,0 +1,58 @@
+{% extends 'video/base/main.html' %}
+{% load static %}
+{% block content %}
+
+<main>
+    <section id="form-container">
+
+        <img id="logo" src="{% static 'images/chat-icon.png' %}" />
+
+        <div id="welcome-message">
+            <h1>Welcome to MyChat</h1>
+            <p>A group video calling platform made just for you!</p>
+        </div>
+
+        <form id="autoJoinForm">
+            <!-- Hidden Fields -->
+            <input type="hidden" name="room" id="roomInput" value="" />
+            <input type="hidden" name="name" id="nameInput" value="" />
+
+            <button type="button" onclick="autoJoin()">Auto Join Stream</button>
+        </form>
+
+    </section>
+</main>
+
+<script>
+    function autoJoin() {
+        // Automatically fill values here
+        const room = "ROOM123";  // or dynamically generate a room name
+        const name = "Guest" + Math.floor(Math.random() * 1000);  // auto guest name
+
+        document.getElementById('roomInput').value = room;
+        document.getElementById('nameInput').value = name;
+
+        handleSubmit({ preventDefault: () => {}, target: { room: { value: room }, name: { value: name } } });
+    }
+
+    let handleSubmit = async (e) => {
+        e.preventDefault()
+        let room = e.target.room.value.toUpperCase()
+        let name = e.target.name.value
+
+        let response = await fetch(`/video/get_token/?channel=${room}`)
+        let data = await response.json()
+
+        let UID = data.uid
+        let token = data.token
+
+        sessionStorage.setItem('UID', UID)
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('room', room)
+        sessionStorage.setItem('name', name)
+
+        window.open('/video/room/', '_self')
+    }
+</script>
+
+{% endblock content %}
